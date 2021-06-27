@@ -33,6 +33,7 @@ def get_publicip_eni(eniId):
 
 
 def scheduled_routine(client):
+    client = boto3.client('ecs')
     taskArn = get_task_arn(client)
     print('taskArn: ' + taskArn)
     
@@ -44,10 +45,7 @@ def scheduled_routine(client):
 
 
 def main():
-    client = boto3.client('ecs')
-    scheduled_routine(client)
-
-    schedule.every().hour.do(scheduled_routine, client=client)
+    schedule.every().hour.do(scheduled_routine)
     while True:
         schedule.run_pending()
         time.sleep(1)
