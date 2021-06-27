@@ -32,17 +32,17 @@ def get_publicip_eni(eniId):
 
 
 def main():
+    print('Process Started.')
     client = boto3.client('ecs')
-    while True:
-        taskArn = get_task_arn(client)
-        print('taskArn: ' + taskArn)
+    taskArn = get_task_arn(client)
+    print('taskArn: ' + taskArn)
     
-        eniId = get_task_eni(client, taskArn)
-        print('eniId: ' + eniId)
+    eniId = get_task_eni(client, taskArn)
+    print('eniId: ' + eniId)
     
-        publicIp = get_publicip_eni(eniId)
-        print('Public IP: ' + publicIp)
-        time.sleep(3600)
+    publicIp = get_publicip_eni(eniId)
+    print('Public IP: ' + publicIp)
+    time.sleep(3600)
 
 
 if __name__ == "__main__":
