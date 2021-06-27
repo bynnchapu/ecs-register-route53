@@ -45,8 +45,9 @@ def scheduled_routine(client):
 
 def main():
     client = boto3.client('ecs')
-    schedule.every().hour.do(scheduled_routine)
+    scheduled_routine(client)
 
+    schedule.every().hour.do(scheduled_routine, client=client)
     while True:
         schedule.run_pending()
         time.sleep(1)
