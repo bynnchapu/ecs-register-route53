@@ -4,4 +4,4 @@ RUN yum -y install python3 && \
     pip3 install boto3 schedule
 ADD register-route53.py /usr/local/bin/
 
-ENTRYPOINT /usr/bin/python /usr/local/bin/register-route53.py
+ENTRYPOINT /usr/bin/python3 /usr/local/bin/register-route53.py
