@@ -48,7 +48,7 @@ def main():
     schedule.every().hour.do(scheduled_routine)
 
     while True:
-        sche.run_pending()
+        schedule.run_pending()
         time.sleep(1)
 
 
