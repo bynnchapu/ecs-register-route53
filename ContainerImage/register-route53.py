@@ -26,7 +26,7 @@ def get_task_eni(client, taskArn):
 
 
 def get_publicip_eni(eniId):
-    eniInfo = boto3.resource('ec2').NetworkInterface(eniId)
+    eniInfo = boto3.resource('ec2', region_name=os.getenv('REGION')).NetworkInterface(eniId)
     
     return eniInfo.association_attribute['PublicIp']
 
