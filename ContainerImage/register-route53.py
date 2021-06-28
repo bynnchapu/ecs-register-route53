@@ -31,14 +31,19 @@ def get_publicip_eni(eniId):
     return eniInfo.association_attribute['PublicIp']
 
 
-print('Process Started.')
-client = boto3.client('ecs')
-taskArn = get_task_arn(client)
-print('taskArn: ' + taskArn)
+def main():
+    print('Process Started.')
+    client = boto3.client('ecs')
+    taskArn = get_task_arn(client)
+    print('taskArn: ' + taskArn)
+    
+    eniId = get_task_eni(client, taskArn)
+    print('eniId: ' + eniId)
+    
+    publicIp = get_publicip_eni(eniId)
+    print('Public IP: ' + publicIp)
+    time.sleep(3600)
 
-eniId = get_task_eni(client, taskArn)
-print('eniId: ' + eniId)
 
-publicIp = get_publicip_eni(eniId)
-print('Public IP: ' + publicIp)
-time.sleep(3600)
+if __name__ == "__main__":
+    main()
