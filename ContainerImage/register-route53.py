@@ -1,6 +1,7 @@
 import json
 import os
 import boto3
+import schedule
 import time
 
 
@@ -31,9 +32,7 @@ def get_publicip_eni(eniId):
     return eniInfo.association_attribute['PublicIp']
 
 
-def main():
-    print('Process Started.')
-    client = boto3.client('ecs', region_name=os.getenv('REGION'))
+def scheduled_routine(client):
     taskArn = get_task_arn(client)
     print('taskArn: ' + taskArn)
     
@@ -42,7 +41,17 @@ def main():
     
     publicIp = get_publicip_eni(eniId)
     print('Public IP: ' + publicIp)
-    time.sleep(3600)
+
+
+
+def main():
+    print('Process Started.')
+    client = boto3.client('ecs', region_name=os.getenv('REGION'))
+    schedule.every().hour.do(scheduled_routine, client=client)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 
 if __name__ == "__main__":
