@@ -33,7 +33,7 @@ def get_publicip_eni(eniId):
 
 def main():
     print('Process Started.')
-    client = boto3.client('ecs')
+    client = boto3.client('ecs', region_name=os.getenv('REGION'))
     taskArn = get_task_arn(client)
     print('taskArn: ' + taskArn)
     
