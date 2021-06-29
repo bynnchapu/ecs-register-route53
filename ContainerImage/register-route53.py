@@ -5,49 +5,58 @@ import schedule
 import time
 
 
-def get_task_arn(client):
-    response = client.list_tasks(
-        cluster=os.getenv('CLUSTER'),
-        serviceName=os.getenv('SERVICE'),
-        desiredStatus='RUNNING'
-    )
-    taskArn = response['taskArns'][0]
+class EcsTaskIp:
+    ecsClient = None
+    ec2Client = None
+    taskArn = None
+    eniId = None
+    publicIp = None
+
+    def __init__(self):
+        self.ecsClient = boto3.client('ecs', region_name=os.getenv('REGION'))
+        self.ec2Resource = boto3.resource('ec2', region_name=os.getenv('REGION'))
     
-    return taskArn
 
-
-def get_task_eni(client, taskArn):
-    response = client.describe_tasks(
-        cluster=os.getenv('CLUSTER'),
-        tasks=[taskArn]
-    )
-    eniId = response['tasks'][0]['attachments'][0]['details'][1]['value']
+    def GetTaskArn(self):
+        response = self.ecsClient.list_tasks(
+            cluster=os.getenv('CLUSTER'),
+            serviceName=os.getenv('SERVICE'),
+            desiredStatus='RUNNING'
+        )
+        self.taskArn = response['taskArns'][0]
+        print('taskArn: ' + self._taskArn)
     
-    return eniId
-
-
-def get_publicip_eni(eniId):
-    eniInfo = boto3.resource('ec2', region_name=os.getenv('REGION')).NetworkInterface(eniId)
+        return self.taskArn
     
-    return eniInfo.association_attribute['PublicIp']
 
-
-def scheduled_routine(client):
-    taskArn = get_task_arn(client)
-    print('taskArn: ' + taskArn)
+    def GetTaskEni(self):
+        response = self.ecsClient.describe_tasks(
+            cluster=os.getenv('CLUSTER'),
+            tasks=[self.taskArn]
+        )
+        self.eniId = response['tasks'][0]['attachments'][0]['details'][1]['value']
     
-    eniId = get_task_eni(client, taskArn)
-    print('eniId: ' + eniId)
-    
-    publicIp = get_publicip_eni(eniId)
-    print('Public IP: ' + publicIp)
+        return self.eniId
 
+
+    def GetPublicIpFromEni(self):
+        eniInfo = self.ec2Resource.NetworkInterface(self.eniId)
+        self.publicIp = association_attribute['PublicIp']
+        print('PublicIp: ' + self.publicIp)
+
+        return self.publicIp
+
+
+def scheduled_routine():
+    ecsTaskIp = EcsTaskIp()
+    ecsTaskIp.GetTaskArn()
+    ecsTaskIp.GetTaskEni()
+    ecsTaskIp.GetPublicIpFromEni()
 
 
 def main():
     print('Process Started.')
-    client = boto3.client('ecs', region_name=os.getenv('REGION'))
-    schedule.every().hour.do(scheduled_routine, client=client)
+    schedule.every().hour.do(scheduled_routine)
 
     while True:
         schedule.run_pending()
