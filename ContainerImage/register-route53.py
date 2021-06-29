@@ -6,19 +6,19 @@ import time
 
 
 class EcsTaskIp:
-    ecsClient = None
-    ec2Resource = None
+    _ecsClient = None
+    _ec2Resource = None
     taskArn = None
     eniId = None
     publicIp = None
 
     def __init__(self):
-        self.ecsClient = boto3.client('ecs', region_name=os.getenv('REGION'))
-        self.ec2Resource = boto3.resource('ec2', region_name=os.getenv('REGION'))
+        self._ecsClient = boto3.client('ecs', region_name=os.getenv('REGION'))
+        self._ec2Resource = boto3.resource('ec2', region_name=os.getenv('REGION'))
     
 
     def GetTaskArn(self):
-        response = self.ecsClient.list_tasks(
+        response = self._ecsClient.list_tasks(
             cluster=os.getenv('CLUSTER'),
             serviceName=os.getenv('SERVICE'),
             desiredStatus='RUNNING'
@@ -30,7 +30,7 @@ class EcsTaskIp:
     
 
     def GetTaskEni(self):
-        response = self.ecsClient.describe_tasks(
+        response = self._ecsClient.describe_tasks(
             cluster=os.getenv('CLUSTER'),
             tasks=[self.taskArn]
         )
@@ -40,7 +40,7 @@ class EcsTaskIp:
 
 
     def GetPublicIpFromEni(self):
-        eniInfo = self.ec2Resource.NetworkInterface(self.eniId)
+        eniInfo = self._ec2Resource.NetworkInterface(self.eniId)
         self.publicIp = eniInfo.association_attribute['PublicIp']
         print('PublicIp: ' + self.publicIp)
 
