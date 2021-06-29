@@ -56,8 +56,10 @@ def scheduled_routine():
 
 def main():
     print('Process Started.')
-    schedule.every().hour.do(scheduled_routine)
+    # Run at once
+    scheduled_routine()
 
+    schedule.every().hour.do(scheduled_routine)
     while True:
         schedule.run_pending()
         time.sleep(1)
