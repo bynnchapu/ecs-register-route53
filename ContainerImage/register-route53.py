@@ -55,6 +55,7 @@ class EcsTaskIp:
 
 def scheduled_routine():
     ecsTaskIp = EcsTaskIp()
+    ecsTaskIp.GetPublicIp()
 
 
 def main():
