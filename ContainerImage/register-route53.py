@@ -45,6 +45,12 @@ class EcsTaskIp:
         print('PublicIp: ' + self.publicIp)
 
         return self.publicIp
+    
+
+    def GetPublicIp(self):
+        self._GetTaskArn()
+        self._GetTaskEni()
+        self._GetPublicIpFromEni()
 
 
 def scheduled_routine():
