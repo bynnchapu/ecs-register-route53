@@ -7,7 +7,7 @@ import time
 
 class EcsTaskIp:
     ecsClient = None
-    ec2Client = None
+    ec2Resource = None
     taskArn = None
     eniId = None
     publicIp = None
