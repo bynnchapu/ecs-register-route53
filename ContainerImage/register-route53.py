@@ -41,7 +41,7 @@ class EcsTaskIp:
 
     def GetPublicIpFromEni(self):
         eniInfo = self.ec2Resource.NetworkInterface(self.eniId)
-        self.publicIp = association_attribute['PublicIp']
+        self.publicIp = eniInfo.association_attribute['PublicIp']
         print('PublicIp: ' + self.publicIp)
 
         return self.publicIp
