@@ -13,11 +13,13 @@ class EcsTaskIp:
     publicIp = None
 
     def __init__(self):
+        print('Created Class instance')
         self.ecsClient = boto3.client('ecs', region_name=os.getenv('REGION'))
         self.ec2Resource = boto3.resource('ec2', region_name=os.getenv('REGION'))
     
 
     def GetTaskArn(self):
+        print('Called GetTaskArn function')
         response = self.ecsClient.list_tasks(
             cluster=os.getenv('CLUSTER'),
             serviceName=os.getenv('SERVICE'),
@@ -30,6 +32,7 @@ class EcsTaskIp:
     
 
     def GetTaskEni(self):
+        print('Called GetTaskEni function')
         response = self.ecsClient.describe_tasks(
             cluster=os.getenv('CLUSTER'),
             tasks=[self.taskArn]
@@ -40,6 +43,7 @@ class EcsTaskIp:
 
 
     def GetPublicIpFromEni(self):
+        print('Called GetPublicIpFromEni function')
         eniInfo = self.ec2Resource.NetworkInterface(self.eniId)
         self.publicIp = association_attribute['PublicIp']
         print('PublicIp: ' + self.publicIp)
