@@ -24,7 +24,7 @@ class EcsTaskIp:
             desiredStatus='RUNNING'
         )
         self.taskArn = response['taskArns'][0]
-        print('taskArn: ' + self._taskArn)
+        print('taskArn: ' + self.taskArn)
     
         return self.taskArn
     
