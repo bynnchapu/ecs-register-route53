@@ -61,29 +61,29 @@ class Route53Update:
     
 
     def UpdateZone(self, resource):
-        print(resource)
-        #return self._route53Client.change_resource_record_sets(
-        #    HostedZoneId=os.getenv('HOSTED_ZONE'),
-        #    ChangeBatch={
-        #        'Changes': [
-        #            {
-        #                'Action': 'UPSERT',
-        #                'ResourceRecordSet': {
-        #                    {
-        #                        'Name': os.getenv('RECORD_NAME'),
-        #                        'TYPE': 'A',
-        #                        'TTL': 300,
-        #                        'ResourceRecords': [
-        #                            {
-        #                                'Value': resource
-        #                            }
-        #                        ]
-        #                    }
-        #                }
-        #            }
-        #        ]
-        #    }
-        #)
+        params = {
+            HostedZoneId: os.getenv('HOSTED_ZONE'),
+            ChangeBatch: {
+                'Changes': [
+                    {
+                        'Action': 'UPSERT',
+                        'ResourceRecordSet': {
+                            {
+                                'Name': os.getenv('RECORD_NAME'),
+                                'TYPE': 'A',
+                                'TTL': 300,
+                                'ResourceRecords': [
+                                    {
+                                        'Value': resource
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+        return self._route53Client.change_resource_record_sets(**params)
 
 
 def scheduled_routine():
