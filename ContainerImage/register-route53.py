@@ -66,7 +66,7 @@ class Route53Update:
             ChangeBatch={
                 'Changes': [
                     {
-                        'ACTION': 'UPSERT',
+                        'Action': 'UPSERT',
                         'ResourceRecordSet': [
                             {
                                 'Name': os.getenv('RECORD_NAME'),
