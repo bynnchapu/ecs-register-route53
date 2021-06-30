@@ -55,12 +55,17 @@ class EcsTaskIp:
 
 class Route53Update:
     _route53Client = None
+    _publicIp = None
 
     def __init__(self):
         self._route53Client = boto3.client('route53')
     
 
-    def UpdateZone(self, resource):
+    def SetPublicIp(self, publicIp):
+        self._publicIp = publicIp
+
+
+    def UpdateZone(self):
         params = {
             'HostedZoneId': os.getenv('HOSTED_ZONE'),
             'ChangeBatch': {
@@ -74,7 +79,7 @@ class Route53Update:
                                 'TTL': 300,
                                 'ResourceRecords': [
                                     {
-                                        'Value': resource
+                                        'Value': self.resource
                                     }
                                 ]
                             }
@@ -91,7 +96,8 @@ def scheduled_routine():
     ecsTaskIp.GetPublicIp()
     
     route53Update = Route53Update()
-    route53Update.UpdateZone(ecsTaskIp.publicIp)
+    route53Update.SetPublicIp(ecsTaskIp.publicIp)
+    route53Update.UpdateZone()
 
 
 def main():
