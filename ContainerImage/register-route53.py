@@ -71,10 +71,7 @@ class Route53Update:
                             {
                                 'Name': os.getenv('RECORD_NAME'),
                                 'TYPE': 'A',
-                                'TTL': 500,
-                                'ResourceRecords': {
-                                    'Value': resource
-                                }
+                                'TTL': 300,
                             }
                         ]
                     }
