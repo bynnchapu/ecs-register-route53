@@ -53,9 +53,42 @@ class EcsTaskIp:
         self._GetPublicIpFromEni()
 
 
+class Route53Update:
+    _route53Client = None
+
+    def __init__(self):
+        self._route53Client = boto3.client('route53')
+    
+
+    def UpdateZone(self, resource):
+        return self._route53Client.change_resource_record_sets(
+            HostedZoneId=os.getenv('HOSTED_ZONE'),
+            ChangeBatch={
+                'Changes': [
+                    {
+                        'ACTION': 'UPSERT',
+                        'ResourceRecordSet': [
+                            {
+                                'Name': os.getenv('RECORD_NAME'),
+                                'TYPE': 'A',
+                                'TTL': 500,
+                                'ResourceRecords': {
+                                    'Value': resource
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        )
+
+
 def scheduled_routine():
     ecsTaskIp = EcsTaskIp()
     ecsTaskIp.GetPublicIp()
+    
+    route53Update = Route53Update()
+    route53Update.UpdateZone(ecsTaskIp.publicIp)
 
 
 def main():
