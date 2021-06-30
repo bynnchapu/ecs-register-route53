@@ -79,7 +79,7 @@ class Route53Update:
                                 'TTL': 300,
                                 'ResourceRecords': [
                                     {
-                                        'Value': self.resource
+                                        'Value': self._publicIp
                                     }
                                 ]
                             }
