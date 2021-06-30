@@ -65,6 +65,11 @@ class Route53Update:
         self._publicIp = publicIp
 
 
+    @property
+    def publicIp(self):
+        return self._publicIp
+
+
     def UpdateZone(self):
         params = {
             'HostedZoneId': os.getenv('HOSTED_ZONE'),
@@ -79,7 +84,7 @@ class Route53Update:
                                 'TTL': 300,
                                 'ResourceRecords': [
                                     {
-                                        'Value': self._publicIp
+                                        'Value': self.publicIp
                                     }
                                 ]
                             }
