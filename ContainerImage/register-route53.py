@@ -62,8 +62,8 @@ class Route53Update:
 
     def UpdateZone(self, resource):
         params = {
-            HostedZoneId: os.getenv('HOSTED_ZONE'),
-            ChangeBatch: {
+            'HostedZoneId': os.getenv('HOSTED_ZONE'),
+            'ChangeBatch': {
                 'Changes': [
                     {
                         'Action': 'UPSERT',
