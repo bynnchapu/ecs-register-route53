@@ -67,7 +67,7 @@ class Route53Update:
                 'Changes': [
                     {
                         'Action': 'UPSERT',
-                        'ResourceRecordSet': [
+                        'ResourceRecordSet': {
                             {
                                 'Name': os.getenv('RECORD_NAME'),
                                 'TYPE': 'A',
@@ -78,7 +78,7 @@ class Route53Update:
                                     }
                                 ]
                             }
-                        ]
+                        }
                     }
                 ]
             }
