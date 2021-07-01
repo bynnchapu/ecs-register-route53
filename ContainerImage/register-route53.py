@@ -78,16 +78,14 @@ class Route53Update:
                     {
                         'Action': 'UPSERT',
                         'ResourceRecordSet': {
-                            {
-                                'Name': os.getenv('RECORD_NAME'),
-                                'TYPE': 'A',
-                                'TTL': 300,
-                                'ResourceRecords': [
-                                    {
-                                        'Value': self.publicIp
-                                    }
-                                ]
-                            }
+                            'Name': os.getenv('RECORD_NAME'),
+                            'Type': 'A',
+                            'TTL': 300,
+                            'ResourceRecords': [
+                                {
+                                    'Value': self.publicIp
+                                }
+                            ]
                         }
                     }
                 ]
