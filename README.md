@@ -1,4 +1,5 @@
 ecs-register-route53
 ====================
 
-This image to used for public IP of the task to Route53.
+This image get PublicIP of the ECS task and update the IP address
+to specified DNS record on the rotue53.
