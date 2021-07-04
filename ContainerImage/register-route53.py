@@ -27,7 +27,8 @@ class EcsTaskIp:
             desiredStatus='RUNNING'
         )
         self.taskArn = response['taskArns'][0]
-        print('taskArn: ' + self.taskArn)
+        if self.isDebug:
+            print('taskArn: ' + self.taskArn)
     
         return self.taskArn
     
@@ -38,6 +39,8 @@ class EcsTaskIp:
             tasks=[self.taskArn]
         )
         self.eniId = response['tasks'][0]['attachments'][0]['details'][1]['value']
+        if self.isDebug:
+            print('eniId: ', self.eniId)
     
         return self.eniId
 
