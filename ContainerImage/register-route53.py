@@ -11,10 +11,13 @@ class EcsTaskIp:
     taskArn = None
     eniId = None
     publicIp = None
+    isDebug = False
 
     def __init__(self):
         self._ecsClient = boto3.client('ecs', region_name=os.getenv('REGION'))
         self._ec2Resource = boto3.resource('ec2', region_name=os.getenv('REGION'))
+        if os.getenv('DEBUG') == 'TRUE':
+            self.isDebug =True
     
 
     def _GetTaskArn(self):
@@ -24,7 +27,8 @@ class EcsTaskIp:
             desiredStatus='RUNNING'
         )
         self.taskArn = response['taskArns'][0]
-        print('taskArn: ' + self.taskArn)
+        if self.isDebug:
+            print('taskArn: ' + self.taskArn)
     
         return self.taskArn
     
@@ -35,6 +39,8 @@ class EcsTaskIp:
             tasks=[self.taskArn]
         )
         self.eniId = response['tasks'][0]['attachments'][0]['details'][1]['value']
+        if self.isDebug:
+            print('eniId: ', self.eniId)
     
         return self.eniId
 
@@ -56,9 +62,12 @@ class EcsTaskIp:
 class Route53Update:
     _route53Client = None
     _publicIp = None
+    isDebug = False
 
     def __init__(self):
         self._route53Client = boto3.client('route53')
+        if os.getenv('DEBUG') == 'TRUE':
+            self.isDebug =True
     
 
     def SetPublicIp(self, publicIp):

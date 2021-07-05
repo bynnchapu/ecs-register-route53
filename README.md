@@ -14,3 +14,4 @@ This Docker image uses following environment variables by `register-route53.py` 
 - `SERVICE`: Specify service name in the `CLUSTER` for ECS
 - `HOSTED_ZONE`: Specify hosted zone for Route53
 - `RECORD_NAME`: Specify Record name in the `HOSTED_ZONE` for ECS
+- `DEBUG`: If it is spefified `TRUE`, show debug message
